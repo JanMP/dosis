@@ -1,0 +1,4 @@
+template(name="settings")
+  .ui.container.center.aligned.fitted.segment
+    h1 Einstellungen
+    +quickForm(collection="Meteor.users" doc=currentUser type="update" id="accountForm" fields="profile")

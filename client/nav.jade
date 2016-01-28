@@ -1,0 +1,11 @@
+template(name="nav")
+  .ui.fixed.transparent.main.menu
+    .header.item Dosis
+    a.item(class=isActiveRoute('info') href=pathFor("info"))
+      i.large.info.icon
+    .right.menu
+      a.item(class=isActiveRoute('home') href=pathFor("home"))
+        i.large.bar.chart.icon
+      a.item(class=isActiveRoute('settings') href=pathFor("settings"))
+        i.large.settings.icon
+      +atNavButton

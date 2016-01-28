@@ -1,0 +1,14 @@
+template(name="graph")
+  .ui.fluid.container.segment.html-viz
+    svg.viz
+  if editIsSet()
+    .ui.text.container.segment
+      h1($b="html : editFormattedDate")
+      button.ui.basic.icon.button($b="click : incInTake")
+        i.plus.icon
+      span(style ="display:inline-block;width:40px;text-align:center") #{editInTake}
+      button.ui.basic.icon.button($b="click : decInTake")
+        i.minus.icon
+      Label(style="margin-left: 3em") INR:
+      .ui.input
+        input(type="text" $b="value : editInr, enter : updateInr")
