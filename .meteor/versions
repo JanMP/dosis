@@ -8,6 +8,7 @@ aldeed:schema-deny@1.0.1
 aldeed:schema-index@1.0.1
 aldeed:simple-schema@1.5.3
 allow-deny@1.0.2
+arboleya:electrify@2.1.4
 arillo:flow-router-helpers@0.5.1
 autopublish@1.0.5
 autoupdate@1.2.6
