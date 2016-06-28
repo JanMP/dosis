@@ -20,7 +20,7 @@ autopublish             # Publish all data to the clients (for prototyping)
 insecure                # Allow all DB writes from clients (for prototyping)
 
 coffeescript
-stylus
+fourseven:scss
 dalgard:jade
 check
 meteortoys:allthings
@@ -47,4 +47,4 @@ keepnox:perfect-scrollbar
 mdg:validated-method
 standard-minifier-css
 standard-minifier-js
-arboleya:electrify
+#arboleya:electrify

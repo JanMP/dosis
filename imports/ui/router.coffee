@@ -1,8 +1,13 @@
+require "/imports/ui/navbar.jade"
+require "/imports/ui/info.jade"
+require "/imports/ui/graph/graph.coffee"
+require "/imports/ui/settings/settings.coffee"
+
 FlowRouter.route "/info",
   name : "info"
   action : ->
     BlazeLayout.render "layout",
-      nav : "nav"
+      nav : "navbar"
       main : "info"
       footer : "footer"
 
@@ -11,7 +16,7 @@ FlowRouter.route "/",
   triggersEnter : [AccountsTemplates.ensureSignedIn]
   action : ->
     BlazeLayout.render "layout",
-      nav : "nav"
+      nav : "navbar"
       main : "graph"
       footer : "footer"
 
@@ -20,14 +25,14 @@ FlowRouter.route "/settings",
   triggersEnter : [AccountsTemplates.ensureSignedIn]
   action : ->
     BlazeLayout.render "layout",
-      nav : "nav"
+      nav : "navbar"
       main : "settings"
       footer : "footer"
 
 FlowRouter.notFound =
   action : ->
     BlazeLayout.render "layout",
-      nav : "nav"
+      nav : "navbar"
       main : "pageNotFound"
       footer : "footer"
 

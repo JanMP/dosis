@@ -1,11 +1,16 @@
+require "./d3graph.coffee"
+require "./graph.jade"
+require "./graph.sass"
+
+{ Dosis } = require "/imports/api/dosis.coffee"
+
 Template.graph.viewmodel
- 
   startDate : -> new Date Meteor.user()?.profile?.startYear or 2015,
     Meteor.user()?.profile?.startMonth-1 or 0
   endDate : -> new Date Meteor.user()?.profile?.endYear or 2020,
     Meteor.user()?.profile?.endMonth-1 or 12
   inTakeData : ->
-    coll.dosisDB.find
+    Dosis.find
       userId : Meteor.userId()
       inTake :
         $exists : true
@@ -14,7 +19,7 @@ Template.graph.viewmodel
       date : new Date d.year, d.month, d.day, 12
       inTake : d.inTake
   inrData : ->
-    coll.dosisDB.find
+    Dosis.find
       userId : Meteor.userId()
       inr :
         $exists : true
@@ -22,12 +27,12 @@ Template.graph.viewmodel
     .fetch().map (d) ->
       date : new Date d.year, d.month, d.day, 11, 59, 59
       inr : d.inr
-  
+
   interpolation : "basis"
   res : 3
   dayWidth : 20
   tAbsorb : 2
-  
+
   editIsSet : false
   editDate : new Date()
   editFormattedDate : ""
@@ -41,7 +46,7 @@ Template.graph.viewmodel
   editDoc : ->
     if @editIsSet()
       date = @editDate()
-      doc = coll.dosisDB.findOne
+      doc = Dosis.findOne
         userId : Meteor.userId()
         year : date.getFullYear()
         month : date.getMonth()
@@ -77,7 +82,7 @@ Template.graph.viewmodel
       month : date.getMonth()
       day : date.getDate()
       inr : Number(@editInr())
-      
+
   onRendered : ->
     @graph = share.newDoseGraph this, @editSet
     $(".html-viz").perfectScrollbar()
@@ -94,4 +99,3 @@ Template.graph.viewmodel
       tAbsorb : @tAbsorb()
     @graph.update options
     $(".html-viz").perfectScrollbar "update"
-

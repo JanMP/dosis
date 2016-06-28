@@ -1,5 +1,7 @@
-coll.dosisDB = new Mongo.Collection "dosisdb"
-schem.dosisDB = new SimpleSchema
+{ Mongo } = require "meteor/mongo"
+
+Dosis = new Mongo.Collection "dosisdb"
+Dosis.schema = new SimpleSchema
   userId :
     type : String
   year :
@@ -19,7 +21,5 @@ schem.dosisDB = new SimpleSchema
     optional : true
     min : 0.0
     max : 5.0
-coll.dosisDB.attachSchema schem.dosisDB
-
-
-
+Dosis.attachSchema Dosis.schema
+exports.Dosis = Dosis

@@ -1,4 +1,4 @@
-schem.userProfile = new SimpleSchema
+userProfileSchema = new SimpleSchema
   startYear :
     type : Number
     min : 1980
@@ -20,9 +20,7 @@ schem.userProfile = new SimpleSchema
     max : 12
     defaultValue : 1
 
-
-
-schem.user = new SimpleSchema
+userSchema = new SimpleSchema
   username :
     type : String
     optional : true
@@ -39,7 +37,7 @@ schem.user = new SimpleSchema
   createdAt :
     type : Date
   profile :
-    type : schem.userProfile
+    type : userProfileSchema
     optional : true
   services :
     type : Object
@@ -52,4 +50,4 @@ schem.user = new SimpleSchema
     type : Date
     optional : true
 
-Meteor.users.attachSchema schem.user
+Meteor.users.attachSchema userSchema
