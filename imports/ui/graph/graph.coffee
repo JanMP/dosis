@@ -38,8 +38,7 @@ Template.graph.viewmodel
   editFormattedDate : ""
   editInr : ""
   editInTake : ->
-    doc = @editDoc()
-    doc?.inTake
+    @editDoc()?.inTake
 
   graph : {}
 
@@ -56,8 +55,8 @@ Template.graph.viewmodel
     @editDate d.date
     @editFormattedDate d.date.toLocaleDateString()
     @editIsSet true
-    @editInr(@editDoc()?.inr or "")
-    @editInTake(@editDoc()?.inTake or "")
+    @editInr @editDoc()?.inr or ""
+    @editInTake @editDoc()?.inTake or ""
 
   incInTake : ->
     date = @editDate()

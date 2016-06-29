@@ -48,3 +48,6 @@ mdg:validated-method
 standard-minifier-css
 standard-minifier-js
 #arboleya:electrify
+
+practicalmeteor:mocha
+xolvio:cleaner

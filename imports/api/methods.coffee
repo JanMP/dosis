@@ -12,18 +12,15 @@ updateInTake = new ValidatedMethod
     plus :
       type : Boolean
   .validator()
-
   run : ({year, month, day, plus}) ->
     unless @userId
       throw new Meteor.Error "logged-out",
         "User must be logged in to modify data"
-
     query =
       userId : @userId
       year : year
       month : month
       day : day
-
     doc = Dosis.findOne query
     if doc?
       if doc.inTake?
@@ -56,18 +53,15 @@ updateInr = new ValidatedMethod
       type : Number
       decimal : true
   .validator()
-
   run : ({year, month, day, inr}) ->
     unless @userId
       throw new Meteor.Error "logged-out",
         "User must be logged in to modify data"
-
     query =
       userId : @userId
       year : year
       month : month
       day : day
-
     doc = Dosis.findOne query
     if doc?
       Dosis.update query,
