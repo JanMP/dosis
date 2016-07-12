@@ -15,7 +15,7 @@ makeInrData = (n) -> ( for d in [1..n]
 )
 
 share.newDoseGraph = (caller, callback)->
-  
+
   decay = (n0, dt) ->
     n0 * 2 ** (-dt / oneDay / 6.5)
 
@@ -31,28 +31,33 @@ share.newDoseGraph = (caller, callback)->
   addDoseFunctions = (doseFunc1, doseFunc2) ->
     (t) ->
       doseFunc1(t) + doseFunc2(t)
-      
+
   margin =
     top : 20
     right : 40
     bottom : 30
     left : 40
 
-  viz = d3.select ".viz"
-  htmlViz = d3.select ".html-viz"
-  chart = viz.append "g"
-    .attr "transform", "translate(#{margin.left}, #{margin.top})"
+  leftViz = d3.select "#left-viz"
+  centerViz = d3.select "#center-viz"
+  rightViz = d3.select "#right-viz"
+  vizzes = d3.select "#vizzes-container"
+
+  chart = centerViz.append "g"
+    .attr "transform", "translate(0, #{margin.top})"
   dosePath = chart.append "path"
     .attr "class", "dose-path"
   xAxisGroup = chart.append "g"
     .attr "class", "time-axis"
-  yAxisGroup = chart.append "g"
+  yAxisGroup = leftViz.append "g"
     .attr "class", "dose-axis"
-  inrAxisGroup = chart.append "g"
+    .attr "transform", "translate(#{margin.left - 1}, #{margin.top})"
+  inrAxisGroup = rightViz.append "g"
     .attr "class", "inr-axis"
+    .attr "transform", "translate(0, #{margin.top})"
   tip = d3.select("body").append "div"
     .attr "class", "tooltip"
-    
+
   update = (opt) ->
     #defaults
     opt.res ?= 3
@@ -65,14 +70,14 @@ share.newDoseGraph = (caller, callback)->
 
     inTakeData = opt.inTakeData
     inrData = opt.inrData
-    
+
     # Doing the Math
     # Build the function
     calcDose = (t) -> 0
     for d in inTakeData
       calcDose = addDoseFunctions calcDose,
         doseFunction d.inTake, d.date, opt.tAbsorb*oneDay
-    
+
     # Calculate the data points
     doseData = (
       for t in [opt.startDate.valueOf()..opt.endDate.valueOf()] by opt.res*oneHour
@@ -85,24 +90,35 @@ share.newDoseGraph = (caller, callback)->
       for t in [opt.startDate.valueOf()..opt.endDate.valueOf()] by oneDay
         date : new Date (t)
     )
-      
-    width = doseData.length * opt.res / 24 * opt.dayWidth + margin.left + margin.right
+
+    centerWidth = doseData.length * opt.res / 24 * opt.dayWidth
     height = opt.height
-    
-    viz
-      .attr "width", width
+
+    vizzes
+      .attr "width", centerWidth + margin.left + margin.right
+
+    centerViz
+      .attr "width", centerWidth
       .attr "height", height
-      
+
+    leftViz
+      .attr "width", margin.left
+      .attr "height", height
+
+    rightViz
+      .attr "width", margin.right
+      .attr "height", height
+
     x = d3.time.scale()
       .domain [d3.min(doseData, (d) -> d.date),
                d3.max(doseData, (d) -> d.date)]
-      .range [0, width - margin.left - margin.right]
+      .range [0, centerWidth]
 
     y = d3.scale.linear()
       .domain [0,
                d3.max(doseData, (d) -> d.dose)]
       .range [height - margin.top - margin.bottom, 0]
-      
+
     inrY = d3.scale.linear()
       .domain [0,
                d3.max(inrData, (d) -> d.inr)]
@@ -120,10 +136,10 @@ share.newDoseGraph = (caller, callback)->
 
     inTakeBar = chart.selectAll ".intake-bar"
       .data inTakeData
-    
+
     inTakeBar.enter().append "line"
       .attr "class", "intake-bar"
-      
+
     inTakeBar
       .transition()
       .style "opacity", (d) ->
@@ -136,15 +152,15 @@ share.newDoseGraph = (caller, callback)->
       .attr "y2", (d) -> y d.inTake
       .attr "x1", (d) -> x d.date
       .attr "y1", (d) -> y 0
-      
+
     inTakeBar.exit().remove()
-    
+
     inrPoint = chart.selectAll ".inr-point"
       .data inrData
-      
+
     inrPoint.enter().append "circle"
       .attr "class", "inr-point"
-      
+
     inrPoint
       .transition()
       .style "opacity", (d) ->
@@ -155,12 +171,12 @@ share.newDoseGraph = (caller, callback)->
       .attr "cx", (d) -> x d.date
       .attr "cy", (d) -> inrY d.inr
       .attr "r", opt.dayWidth/2
-      
+
       inrPoint.exit().remove()
-    
+
     dayGroup = chart.selectAll ".day-group"
       .data dayData
-    
+
     showTip = (d) ->
       tip
         .html "#{d.date.toLocaleDateString()}"
@@ -168,17 +184,17 @@ share.newDoseGraph = (caller, callback)->
         .style "left", "#{d3.event.pageX-30}px"
         .transition()
         .style "opacity", .9
-          
+
     hideTip = ->
       tip
         .transition()
         .style "opacity", 0
-    
+
     dayGroup.enter().append "g"
       .attr "class", "day-group"
     .append "rect"
       .attr "class", "day-box"
-      
+
     dayGroup
       .attr "transform", (d) -> "translate(#{x d.date}, 0)"
       .on "mouseover", (d,i) ->
@@ -187,14 +203,14 @@ share.newDoseGraph = (caller, callback)->
         hideTip()
       .on "click", (d,i) ->
         callback.call caller, d, i
-      
+
     dayGroup.selectAll ".day-box"
       .attr "width", opt.dayWidth
       .attr "height", height - margin.top - margin.bottom
-    
-    
+
+
     dayGroup.exit().remove()
-    
+
     xAxis = d3.svg.axis()
       .scale x
       .orient "bottom"
@@ -202,24 +218,24 @@ share.newDoseGraph = (caller, callback)->
     yAxis = d3.svg.axis()
       .scale y
       .orient "left"
-    
+
     inrAxis = d3.svg.axis()
       .scale inrY
       .orient "right"
-      
+
     xAxisGroup
       .transition()
-      .attr "transform", "translate(0, #{height-margin.bottom - margin.top})"
+      .attr "transform", "translate(0, #{height - margin.bottom - margin.top})"
       .call xAxis
 
     yAxisGroup
       .transition()
       .call yAxis
-      
+
     inrAxisGroup
       .transition()
-      .attr "transform", "translate(#{width-margin.left - margin.right}, 0)"
+      #.attr "transform", "translate(#{width-margin.left - margin.right}, 0)"
       .call inrAxis
-      
+
   #return
   update : update

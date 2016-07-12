@@ -4,10 +4,13 @@ head
 body
 
 template(name="layout")
-  {{> Template.dynamic template=nav}}
+  //{{> Template.dynamic template=nav}}
+  +Template.dynamic(template=nav)
   div#content
-    {{> Template.dynamic template=main}}
-  {{> Template.dynamic template=footer}}
+    //{{> Template.dynamic template=main}}
+    +Template.dynamic(template=main)
+  //{{> Template.dynamic template=footer}}
+  +Template.dynamic(template=footer)
 
 template(name="pageNotFound")
   .ui.container.center.aligned.segment

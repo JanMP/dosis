@@ -1,6 +1,12 @@
 template(name="graph")
-  .ui.fluid.container.segment.html-viz
-    svg.viz
+  div
+    .vizzes
+      .yAxis-container
+        svg#left-viz
+      #scrolling
+        svg#center-viz
+      .yAxis-container
+        svg#right-viz
   if editIsSet()
     .ui.text.container.segment
       h1($b="html : editFormattedDate")

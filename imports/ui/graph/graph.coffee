@@ -84,7 +84,7 @@ Template.graph.viewmodel
 
   onRendered : ->
     @graph = share.newDoseGraph this, @editSet
-    $(".html-viz").perfectScrollbar()
+    $("#scrolling").perfectScrollbar()
 
   autorun : ->
     options =
@@ -97,4 +97,4 @@ Template.graph.viewmodel
       dayWidth : @dayWidth()
       tAbsorb : @tAbsorb()
     @graph.update options
-    $(".html-viz").perfectScrollbar "update"
+    $("#scrolling").perfectScrollbar "update"
