@@ -16,6 +16,7 @@ Template.graph.viewmodel
         $exists : true
         $gt : 0
     .fetch().map (d) ->
+      id : d._id
       date : new Date d.year, d.month, d.day, 12
       inTake : d.inTake
   inrData : ->

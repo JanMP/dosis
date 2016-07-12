@@ -135,7 +135,7 @@ share.newDoseGraph = (caller, callback)->
       .attr "d", pathFunc doseData
 
     inTakeBar = chart.selectAll ".intake-bar"
-      .data inTakeData
+      .data inTakeData, (d) -> d.id
 
     inTakeBar.enter().append "line"
       .attr "class", "intake-bar"
