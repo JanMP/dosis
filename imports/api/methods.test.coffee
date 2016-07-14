@@ -45,7 +45,7 @@ describe "meth.updateInTake", ->
     fn = -> updateInTake.apply loggedOut, [objectPlus]
     assert.throws fn, Meteor.Error
 
-  it "can remove an item from the collection", ->
+  it "removes an item from the collection, if it removes Intake and INR", ->
     updateInTake.apply loggedIn, [objectPlus]
     assert.equal Dosis.find().count(), 1
     updateInTake.apply loggedIn, [objectMinus]

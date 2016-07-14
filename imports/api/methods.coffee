@@ -1,4 +1,5 @@
 { Dosis } = require "/imports/api/dosis.coffee"
+{ userProfileSchema }  = require "/imports/api/users.coffee"
 
 updateInTake = new ValidatedMethod
   name : "meth.updateInTake"
@@ -70,3 +71,14 @@ updateInr = new ValidatedMethod
     else
       query.inr = inr
       Dosis.insert query
+
+updateSettings = new ValidatedMethod
+  name : "meth.updateSettings"
+  validate : userProfileSchema.validator()
+  run : (profile) ->
+    unless @userId
+      throw new Meteor.Error "logged-out",
+        "User must be logged in to modify data"
+    Meteor.users.update @userId,
+      $set :
+        profile : profile

@@ -1,4 +1,30 @@
 template(name="settings")
-  .ui.container.center.aligned.fitted.segment
+  .ui.text.container.segment
     h1 Einstellungen
-    +quickForm(collection="Meteor.users" doc=currentUser type="update" id="accountForm" fields="profile")
+    with profile
+      +settingsForm
+
+template(name="settingsForm")
+  p Geben Sie den Zeitraum an, für den der Graph dargestellt werden soll:
+  .ui.form
+    .field
+      label Anfang des dargestellten Bereiches
+      .fields
+        select.ui.dropdown($b="options : months, optionsValue : ordinal, optionsText : name, value : startMonth, ref : startMonthSelect")
+        select.ui.compact.dropdown($b="options : years, value : startYear, ref : startYearSelect")
+    .field
+      label Ende des dargestellten Bereiches
+      .fields
+        select.ui.dropdown($b="options : months, optionsValue : ordinal, optionsText : name, value : endMonth, ref : endMonthSelect")
+        select.ui.compact.dropdown($b="options : years, value : endYear, ref : endYearSelect")
+    unless saveEnabled
+      .ui.negative.message
+        .header Einstellungen können nicht gespeichert werden
+        ul.list
+          li Der Anfang des dargestellten Bereiches muss vor dem Ende liegen.
+    button.ui.button($b="click : save, enable : saveEnabled") Save
+
+
+//.ui.container.center.aligned.fitted.segment
+  h1 Einstellungen
+  +quickForm(collection="Meteor.users" doc=currentUser type="update" id="accountForm" fields="profile")

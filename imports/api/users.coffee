@@ -3,7 +3,7 @@ userProfileSchema = new SimpleSchema
     type : Number
     min : 1980
     max : 2050
-    defaultValue : 2015
+    defaultValue : 2016
   startMonth :
     type : Number
     min : 1
@@ -12,13 +12,14 @@ userProfileSchema = new SimpleSchema
   endYear :
     type : Number
     min : 1980
-    max : 2030
-    defaultValue : 2015
+    max : 2050
+    defaultValue : 2017
   endMonth :
     type : Number
     min : 1
     max : 12
     defaultValue : 1
+exports.userProfileSchema = userProfileSchema
 
 userSchema = new SimpleSchema
   username :
@@ -49,5 +50,4 @@ userSchema = new SimpleSchema
   heartbeat :
     type : Date
     optional : true
-
 Meteor.users.attachSchema userSchema

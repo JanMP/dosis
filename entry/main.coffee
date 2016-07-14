@@ -5,6 +5,10 @@ require "/imports/api/methods.coffee"
 
 if Meteor.isClient
   require "/imports/ui/router.coffee"
+  Meteor.subscribe "dosis.userData"
+
+if Meteor.isServer
+  require "/imports/api/publications.coffee"
 
 # Meteor.startup ->
 #   AutoForm.setDefaultTemplate "semanticUI"
